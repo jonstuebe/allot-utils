@@ -1,4 +1,4 @@
-import { format, addMonths, setDate as setDayOfMonth } from "date-fns";
+import { addMonths, setDate as setDayOfMonth } from "date-fns";
 
 import { isBetween } from "./utils";
 import { InitialBill, Bill, PayPeriod, PayPeriods } from "./types";
@@ -46,6 +46,9 @@ export function isBillInPayPeriod(
   { dueDates }: Bill,
   { start, end }: PayPeriod
 ): boolean {
+  if (dueDates.length === 0) {
+    throw new Error("No due dates found in bill. Have you added them?");
+  }
   return (
     dueDates.filter(dueDate => {
       return isBetween(dueDate, start, end);
@@ -65,6 +68,7 @@ export function findPayPeriodsByBillDates(
     })
     .reduce((acc, cur) => acc.concat(cur), []);
 }
+
 export function findPayPeriodsByBill(
   payPeriods: PayPeriods,
   bill: Bill,
@@ -83,18 +87,9 @@ export function addBillToPayPeriod(payPeriod: PayPeriod, bill: Bill) {
   };
 }
 
-export function totalBillsInPayPeriod(payPeriod: PayPeriod) {
-  return payPeriod.bills.reduce((acc, bill: Bill) => acc + bill.amount, 0);
-}
-
 export function createBill(bill: InitialBill) {
   return {
     dueDates: [],
     ...bill
   };
-}
-
-export function formatPayPeriodDate({ start, end }: PayPeriod) {
-  const formatType = "MMM do y";
-  return `${format(start, formatType)} - ${format(end, formatType)}`;
 }
