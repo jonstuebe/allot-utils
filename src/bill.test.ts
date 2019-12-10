@@ -50,7 +50,7 @@ describe("getFutureBillDates", () => {
       )
     ).toThrow("No schedule added");
   });
-  it("moves the date to an earlier possible in short months", () => {
+  it("moves the date to an earlier possible one in short months", () => {
     const bill = createBill({
       name: "Rent",
       amount: 1200,
@@ -63,12 +63,32 @@ describe("getFutureBillDates", () => {
       new Date(2020, 2, 30)
     ]);
   });
-  it("works with config option due.dayOfYear", () => {
+  it("works with config option due.yearly", () => {
     const bill = createBill({
       name: "Rent",
       amount: 1200,
-      due: {}
+      due: { yearly: [10, 15] }
     });
+    expect(addFutureBillDates(bill, new Date(2019, 10, 15))).toEqual({
+      name: "Rent",
+      amount: 1200,
+      due: { yearly: [10, 15] },
+      dueDates: [
+        new Date(2019, 10, 15),
+        new Date(2020, 10, 15),
+        new Date(2021, 10, 15)
+      ]
+    });
+  });
+  it("throws error as wrong date is passed to startOn", () => {
+    const bill = createBill({
+      name: "Rent",
+      amount: 1200,
+      due: { yearly: [10, 15] }
+    });
+    expect(() => addFutureBillDates(bill, new Date(2020, 0, 1))).toThrow(
+      "startOn must have the same month and day as the due date of the bill."
+    );
   });
 });
 

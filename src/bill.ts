@@ -1,4 +1,13 @@
-import { addMonths, getDaysInMonth, setDate as setDayOfMonth } from "date-fns";
+import {
+  addMonths,
+  addYears,
+  getDaysInMonth,
+  setMonth,
+  setDate as setDayOfMonth,
+  isLeapYear,
+  isEqual,
+  isAfter
+} from "date-fns";
 
 import { isBetween } from "./utils";
 import { InitialBill, Bill, PayPeriod } from "./types";
@@ -8,10 +17,26 @@ export function getFutureBillDates(
   startOn: Date,
   numDates = 3
 ): Date[] {
-  if (due.annually) {
-    let annually = due.annually as number[];
-  }
-  if (due.monthly) {
+  if (due.yearly) {
+    let [yearMonth, yearDayOfMonth] = due.yearly as [number, number];
+    // these should be zero indexed
+
+    const yearlyDate = new Date(
+      startOn.getFullYear(),
+      yearMonth,
+      yearDayOfMonth
+    );
+
+    if (!isEqual(startOn, yearlyDate)) {
+      throw new Error(
+        "startOn must have the same month and day as the due date of the bill."
+      );
+    }
+
+    return new Array(numDates).fill(yearlyDate).map((_date, index) => {
+      return addYears(yearlyDate, index);
+    });
+  } else if (due.monthly) {
     let monthly = due.monthly as number;
     return new Array(numDates).fill(startOn).map((_date, index) => {
       const date = addMonths(startOn, index);

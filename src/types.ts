@@ -19,7 +19,7 @@ export interface InitialBill {
   amount: number;
   due: {
     monthly?: number;
-    annually?: [number, number];
+    yearly?: [number, number];
   };
 }
 export interface Bill extends InitialBill {
