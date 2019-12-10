@@ -17,8 +17,9 @@ export type Bills = Bill[];
 export interface InitialBill {
   name: string;
   amount: number;
-  dueOn: {
-    dayOfMonth?: number;
+  due: {
+    monthly?: number;
+    annually?: [number, number];
   };
 }
 export interface Bill extends InitialBill {

@@ -1,19 +1,22 @@
-import { addMonths, setDate as setDayOfMonth } from "date-fns";
+import { addMonths, getDaysInMonth, setDate as setDayOfMonth } from "date-fns";
 
 import { isBetween } from "./utils";
 import { InitialBill, Bill, PayPeriod } from "./types";
 
 export function getFutureBillDates(
-  { dueOn }: Bill,
+  { due }: Bill,
   startOn: Date,
   numDates = 3
 ): Date[] {
-  if (dueOn.dayOfMonth) {
+  if (due.annually) {
+    let annually = due.annually as number[];
+  }
+  if (due.monthly) {
+    let monthly = due.monthly as number;
     return new Array(numDates).fill(startOn).map((_date, index) => {
-      return setDayOfMonth(
-        addMonths(startOn, index),
-        dueOn.dayOfMonth as number
-      );
+      const date = addMonths(startOn, index);
+      const daysInMonth = getDaysInMonth(date);
+      return setDayOfMonth(date, monthly > daysInMonth ? daysInMonth : monthly);
     });
   }
 

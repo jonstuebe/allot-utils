@@ -6,32 +6,19 @@ import {
 } from "./bill";
 import { getPaydays } from "./payday";
 import { getPayPeriods, validatePayPeriods } from "./payPeriod";
-import { createPaycheck } from "./paycheck";
-
-const bill = createBill({
-  name: "Rent",
-  amount: 1200,
-  dueOn: { dayOfMonth: 1 }
-});
-const startingDate = new Date(2019, 10, 22, 0, 0, 0);
-// const paychecks = [
-//   createPaycheck({ amount: 1500, date: new Date(2019, 11, 15) }),
-//   createPaycheck({ amount: 1500, date: new Date(2019, 11, 30) })
-// ];
-const paydays = getPaydays("bi-weekly", startingDate);
-const payPeriods = validatePayPeriods(
-  getPayPeriods(paydays),
-  [addFutureBillDates(bill, startingDate)],
-  []
-);
 
 describe("createBill", () => {
   it("returns a bill with a monthly due date", () => {
+    const bill = createBill({
+      name: "Rent",
+      amount: 1200,
+      due: { monthly: 1 }
+    });
     expect(bill).toEqual({
       name: "Rent",
       amount: 1200,
-      dueOn: {
-        dayOfMonth: 1
+      due: {
+        monthly: 1
       },
       dueDates: []
     });
@@ -40,6 +27,11 @@ describe("createBill", () => {
 
 describe("getFutureBillDates", () => {
   it("returns an array of dates", () => {
+    const bill = createBill({
+      name: "Rent",
+      amount: 1200,
+      due: { monthly: 1 }
+    });
     expect(getFutureBillDates(bill, new Date(2019, 11, 1))).toEqual([
       new Date(2019, 11, 1),
       new Date(2020, 0, 1),
@@ -52,21 +44,46 @@ describe("getFutureBillDates", () => {
         createBill({
           name: "rent",
           amount: 1200,
-          dueOn: {}
+          due: {}
         }),
         new Date(2019, 11, 1)
       )
     ).toThrow("No schedule added");
   });
+  it("moves the date to an earlier possible in short months", () => {
+    const bill = createBill({
+      name: "Rent",
+      amount: 1200,
+      due: { monthly: 30 }
+    });
+
+    expect(getFutureBillDates(bill, new Date(2020, 0, 1))).toEqual([
+      new Date(2020, 0, 30),
+      new Date(2020, 1, 29),
+      new Date(2020, 2, 30)
+    ]);
+  });
+  it("works with config option due.dayOfYear", () => {
+    const bill = createBill({
+      name: "Rent",
+      amount: 1200,
+      due: {}
+    });
+  });
 });
 
 describe("addFutureBillDates", () => {
   it("adds an array of bill dates to a Bill", () => {
+    const bill = createBill({
+      name: "Rent",
+      amount: 1200,
+      due: { monthly: 1 }
+    });
     expect(addFutureBillDates(bill, new Date(2019, 11, 1))).toEqual({
       name: "Rent",
       amount: 1200,
-      dueOn: {
-        dayOfMonth: 1
+      due: {
+        monthly: 1
       },
       dueDates: [
         new Date(2019, 11, 1),
@@ -78,6 +95,19 @@ describe("addFutureBillDates", () => {
 });
 
 describe("isBillInPayPeriod", () => {
+  const bill = createBill({
+    name: "Rent",
+    amount: 1200,
+    due: { monthly: 1 }
+  });
+  const startingDate = new Date(2019, 10, 22, 0, 0, 0);
+  const paydays = getPaydays("bi-weekly", startingDate);
+  const payPeriods = validatePayPeriods(
+    getPayPeriods(paydays),
+    [addFutureBillDates(bill, startingDate)],
+    []
+  );
+
   it("throws error", () => {
     expect(() => isBillInPayPeriod(bill, payPeriods[0])).toThrow(
       "No due dates found in bill. Have you added them?"
