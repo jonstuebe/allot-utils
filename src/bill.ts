@@ -1,7 +1,7 @@
 import { addMonths, setDate as setDayOfMonth } from "date-fns";
 
 import { isBetween } from "./utils";
-import { InitialBill, Bill, PayPeriod, PayPeriods } from "./types";
+import { InitialBill, Bill, PayPeriod } from "./types";
 
 export function getFutureBillDates(
   { dueOn }: Bill,
@@ -17,7 +17,7 @@ export function getFutureBillDates(
     });
   }
 
-  return [startOn];
+  throw new Error("No schedule added");
 }
 
 export function addFutureBillDates(bill: Bill, startOn: Date, numDates = 3) {
@@ -27,20 +27,20 @@ export function addFutureBillDates(bill: Bill, startOn: Date, numDates = 3) {
   };
 }
 
-export function findPayPeriodIndexesByBillDates(
-  payPeriods: PayPeriods,
-  billDates: Date[]
-) {
-  return billDates
-    .map(billDate => {
-      return payPeriods
-        .map(({ start, end }: PayPeriod, index) => {
-          return isBetween(billDate, start, end) ? index : false;
-        })
-        .filter((payPeriod: number | false) => payPeriod !== false);
-    })
-    .reduce((acc, cur) => acc.concat(cur), []);
-}
+// export function findPayPeriodIndexesByBillDates(
+//   payPeriods: PayPeriods,
+//   billDates: Date[]
+// ) {
+//   return billDates
+//     .map(billDate => {
+//       return payPeriods
+//         .map(({ start, end }: PayPeriod, index) => {
+//           return isBetween(billDate, start, end) ? index : false;
+//         })
+//         .filter((payPeriod: number | false) => payPeriod !== false);
+//     })
+//     .reduce((acc, cur) => acc.concat(cur), []);
+// }
 
 export function isBillInPayPeriod(
   { dueDates }: Bill,
@@ -56,36 +56,36 @@ export function isBillInPayPeriod(
   );
 }
 
-export function findPayPeriodsByBillDates(
-  payPeriods: PayPeriods,
-  billDates: Date[]
-): PayPeriods {
-  return billDates
-    .map(billDate => {
-      return payPeriods.filter(({ start, end }: PayPeriod) => {
-        return isBetween(billDate, start, end);
-      });
-    })
-    .reduce((acc, cur) => acc.concat(cur), []);
-}
+// export function findPayPeriodsByBillDates(
+//   payPeriods: PayPeriods,
+//   billDates: Date[]
+// ): PayPeriods {
+//   return billDates
+//     .map(billDate => {
+//       return payPeriods.filter(({ start, end }: PayPeriod) => {
+//         return isBetween(billDate, start, end);
+//       });
+//     })
+//     .reduce((acc, cur) => acc.concat(cur), []);
+// }
 
-export function findPayPeriodsByBill(
-  payPeriods: PayPeriods,
-  bill: Bill,
-  startDate: Date
-) {
-  return findPayPeriodsByBillDates(
-    payPeriods,
-    getFutureBillDates(bill, startDate)
-  );
-}
+// export function findPayPeriodsByBill(
+//   payPeriods: PayPeriods,
+//   bill: Bill,
+//   startDate: Date
+// ) {
+//   return findPayPeriodsByBillDates(
+//     payPeriods,
+//     getFutureBillDates(bill, startDate)
+//   );
+// }
 
-export function addBillToPayPeriod(payPeriod: PayPeriod, bill: Bill) {
-  return {
-    ...payPeriod,
-    bills: [...payPeriod.bills, bill]
-  };
-}
+// export function addBillToPayPeriod(payPeriod: PayPeriod, bill: Bill) {
+//   return {
+//     ...payPeriod,
+//     bills: [...payPeriod.bills, bill]
+//   };
+// }
 
 export function createBill(bill: InitialBill) {
   return {

@@ -2,7 +2,9 @@ import { getPaydays } from "./payday";
 
 describe("getPaydays", () => {
   it("returns an array of dates", () => {
-    expect(getPaydays("bi-weekly", new Date(2019, 10, 22, 0, 0, 0))).toEqual([
+    expect(
+      getPaydays("bi-weekly", new Date(2019, 10, 22, 0, 0, 0), 12)
+    ).toEqual([
       new Date(2019, 10, 22),
       new Date(2019, 11, 6),
       new Date(2019, 11, 20),

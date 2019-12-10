@@ -6,6 +6,7 @@ import {
 } from "./bill";
 import { getPaydays } from "./payday";
 import { getPayPeriods, validatePayPeriods } from "./payPeriod";
+import { createPaycheck } from "./paycheck";
 
 const bill = createBill({
   name: "Rent",
@@ -13,9 +14,13 @@ const bill = createBill({
   dueOn: { dayOfMonth: 1 }
 });
 const startingDate = new Date(2019, 10, 22, 0, 0, 0);
-const payDays = getPaydays("bi-weekly", startingDate);
+// const paychecks = [
+//   createPaycheck({ amount: 1500, date: new Date(2019, 11, 15) }),
+//   createPaycheck({ amount: 1500, date: new Date(2019, 11, 30) })
+// ];
+const paydays = getPaydays("bi-weekly", startingDate);
 const payPeriods = validatePayPeriods(
-  getPayPeriods(payDays),
+  getPayPeriods(paydays),
   [addFutureBillDates(bill, startingDate)],
   []
 );
@@ -41,6 +46,18 @@ describe("getFutureBillDates", () => {
       new Date(2020, 1, 1)
     ]);
   });
+  it("throws error", () => {
+    expect(() =>
+      getFutureBillDates(
+        createBill({
+          name: "rent",
+          amount: 1200,
+          dueOn: {}
+        }),
+        new Date(2019, 11, 1)
+      )
+    ).toThrow("No schedule added");
+  });
 });
 
 describe("addFutureBillDates", () => {
@@ -61,6 +78,11 @@ describe("addFutureBillDates", () => {
 });
 
 describe("isBillInPayPeriod", () => {
+  it("throws error", () => {
+    expect(() => isBillInPayPeriod(bill, payPeriods[0])).toThrow(
+      "No due dates found in bill. Have you added them?"
+    );
+  });
   it("return false", () => {
     expect(
       isBillInPayPeriod(addFutureBillDates(bill, startingDate), payPeriods[0])
