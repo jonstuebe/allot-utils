@@ -5,15 +5,17 @@ import {
   getDate as getDayOfMonth
 } from "date-fns";
 
-import { chunk } from "./utils";
-
 export function getPaydays(
-  type: "bi-weekly" | "bi-monthly" | "monthly",
+  type: "weekly" | "bi-weekly" | "bi-monthly" | "monthly",
   startOn: Date,
   numPaydays = 12,
   opts?: { biMonthly?: [number, number]; monthly?: number }
 ): Array<Date | null> {
   switch (type) {
+    case "weekly":
+      return new Array(numPaydays).fill(startOn).map((payday, index) => {
+        return addWeeks(payday, index);
+      });
     case "bi-weekly":
       return new Array(numPaydays).fill(startOn).map((payday, index) => {
         return addWeeks(payday, index * 2);

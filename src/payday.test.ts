@@ -1,6 +1,22 @@
 import { getPaydays } from "./payday";
 
 describe("getPaydays", () => {
+  it("works with weekly option", () => {
+    expect(getPaydays("weekly", new Date(2019, 10, 22, 0, 0, 0), 12)).toEqual([
+      new Date(2019, 10, 22),
+      new Date(2019, 10, 29),
+      new Date(2019, 11, 6),
+      new Date(2019, 11, 13),
+      new Date(2019, 11, 20),
+      new Date(2019, 11, 27),
+      new Date(2020, 0, 3),
+      new Date(2020, 0, 10),
+      new Date(2020, 0, 17),
+      new Date(2020, 0, 24),
+      new Date(2020, 0, 31),
+      new Date(2020, 1, 7)
+    ]);
+  });
   it("works with bi-weekly option", () => {
     expect(
       getPaydays("bi-weekly", new Date(2019, 10, 22, 0, 0, 0), 12)
