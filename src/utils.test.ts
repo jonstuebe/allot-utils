@@ -1,4 +1,4 @@
-import { isBetween, formatCurrency } from "./utils";
+import { chunk, isBetween, formatCurrency } from "./utils";
 
 describe("isBetween", () => {
   it("return truthy", () => {
@@ -24,5 +24,16 @@ describe("isBetween", () => {
 describe("formatCurrency", () => {
   it("returns in a dollars string format", () => {
     expect(formatCurrency(1250.5)).toEqual("$1,250.50");
+  });
+});
+
+describe("chunk", () => {
+  it("chunks into sets of two items", () => {
+    expect(chunk([1, 10, 1, 10, 1, 10, 1], 2)).toEqual([
+      [1, 10],
+      [1, 10],
+      [1, 10],
+      [1]
+    ]);
   });
 });

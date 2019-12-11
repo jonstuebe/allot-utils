@@ -1,7 +1,7 @@
 import { getPaydays } from "./payday";
 
 describe("getPaydays", () => {
-  it("returns an array of dates", () => {
+  it("works with bi-weekly option", () => {
     expect(
       getPaydays("bi-weekly", new Date(2019, 10, 22, 0, 0, 0), 12)
     ).toEqual([
@@ -17,6 +17,46 @@ describe("getPaydays", () => {
       new Date(2020, 2, 27),
       new Date(2020, 3, 10),
       new Date(2020, 3, 24)
+    ]);
+  });
+  it("works with bi-monthly option", () => {
+    expect(
+      getPaydays("bi-monthly", new Date(2019, 10, 30, 0, 0, 0), 12, {
+        biMonthly: [15, 30]
+      })
+    ).toEqual([
+      null,
+      new Date(2019, 10, 30),
+      new Date(2019, 11, 15),
+      new Date(2019, 11, 30),
+      new Date(2020, 0, 15),
+      new Date(2020, 0, 30),
+      new Date(2020, 1, 15),
+      new Date(2020, 1, 29),
+      new Date(2020, 2, 15),
+      new Date(2020, 2, 30),
+      new Date(2020, 3, 15),
+      new Date(2020, 3, 30)
+    ]);
+  });
+  it("works with monthly option", () => {
+    expect(
+      getPaydays("monthly", new Date(2019, 10, 30, 0, 0, 0), 12, {
+        monthly: 30
+      })
+    ).toEqual([
+      new Date(2019, 10, 30),
+      new Date(2019, 11, 30),
+      new Date(2020, 0, 30),
+      new Date(2020, 1, 29),
+      new Date(2020, 2, 30),
+      new Date(2020, 3, 30),
+      new Date(2020, 4, 30),
+      new Date(2020, 5, 30),
+      new Date(2020, 6, 30),
+      new Date(2020, 7, 30),
+      new Date(2020, 8, 30),
+      new Date(2020, 9, 30)
     ]);
   });
 });
