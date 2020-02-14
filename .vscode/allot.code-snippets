@@ -1,0 +1,17 @@
+{
+  "Create Bill": {
+    "scope": "javascript,typescript",
+    "prefix": "cb",
+    "body": [
+      "createBill({",
+      "  name: \"$1\",",
+      "  amount: $2,",
+      "  autoPay: ${3:true},",
+      "  due: {",
+      "    monthly: $4",
+      "  }",
+      "}),$0"
+    ],
+    "description": "use createBill function"
+  }
+}

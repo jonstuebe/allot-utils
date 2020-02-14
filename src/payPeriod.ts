@@ -1,4 +1,4 @@
-import { addWeeks, format } from "date-fns";
+import { addDays, format, differenceInDays } from "date-fns";
 
 import {
   Bill,
@@ -9,7 +9,7 @@ import {
   Paychecks
 } from "./types";
 import { isBillInPayPeriod } from "./bill";
-import { isBetween } from "./utils";
+import { chunk, isBetween } from "./utils";
 
 export function validatePayPeriod(
   payPeriod: PayPeriod,
@@ -49,12 +49,17 @@ export function totalBillsInPayPeriod(payPeriod: PayPeriod) {
 }
 
 export function getPayPeriods(paydays: Date[]): PayPeriod[] {
-  return paydays.map(payday => ({
-    start: addWeeks(payday, -2),
-    end: payday,
-    bills: [],
-    paychecks: []
-  }));
+  return paydays.map((payday, index) => {
+    let end = paydays[index + 1]
+      ? addDays(paydays[index + 1], -1)
+      : addDays(payday, differenceInDays(payday, paydays[index - 1]));
+    return {
+      start: payday,
+      end,
+      bills: [],
+      paychecks: []
+    };
+  });
 }
 
 export function formatPayPeriodDate(
@@ -68,5 +73,5 @@ export function isPaycheckInPayPeriod(
   paycheck: Paycheck,
   payPeriod: PayPeriod
 ): Boolean {
-  return isBetween(paycheck.date, payPeriod.start, payPeriod.end);
+  return isBetween(paycheck.date, payPeriod.start, payPeriod.end, true);
 }

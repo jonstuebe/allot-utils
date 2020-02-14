@@ -60,6 +60,4 @@ export function getPaydays(
         return addMonths(payday, index);
       });
   }
-
-  throw new Error("No type provided");
 }

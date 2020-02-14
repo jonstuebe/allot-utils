@@ -1,4 +1,4 @@
-import { isBefore, isAfter } from "date-fns";
+import { isBefore, isAfter, isEqual } from "date-fns";
 
 import { PayPeriods } from "./types";
 import {
@@ -20,8 +20,19 @@ export function chunk(array: Array<any>, size: number): Array<any> {
   return chunked_arr;
 }
 
-export function isBetween(date: Date, start: Date, end: Date): Boolean {
-  return isBefore(date, end) && isAfter(date, start);
+export function isBetween(
+  date: Date,
+  start: Date,
+  end: Date,
+  includeEqual = false
+): Boolean {
+  const between = isBefore(date, end) && isAfter(date, start);
+
+  if (includeEqual) {
+    return between || isEqual(date, start) || isEqual(date, end);
+  }
+
+  return between;
 }
 
 export function formatCurrency(
