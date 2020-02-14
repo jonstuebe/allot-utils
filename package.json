@@ -1,7 +1,7 @@
 {
-  "name": "allot",
+  "name": "@jonstuebe/allot-utils",
   "version": "0.1.0",
-  "description": "Tool that allows you to see when your bills hit",
+  "description": "Util functions for Allot",
   "author": "Jon Stuebe",
   "license": "MIT",
   "keywords": [
@@ -9,10 +9,19 @@
     "payday",
     "paycheck"
   ],
-  "main": "index.js",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "dev": "jest --watch",
-    "test": "jest"
+    "test": "jest",
+    "start": "tsc -w",
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "date-fns": ">= 2.8.x"
   },
   "dependencies": {},
   "devDependencies": {

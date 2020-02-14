@@ -4,11 +4,8 @@ import {
   addWeeks,
   getDaysInMonth,
   getDay as getDayOfWeek,
-  setMonth,
   setDate as setDayOfMonth,
-  isLeapYear,
-  isEqual,
-  isAfter
+  isEqual
 } from "date-fns";
 
 import { isBetween } from "./utils";

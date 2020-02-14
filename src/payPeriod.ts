@@ -9,7 +9,7 @@ import {
   Paychecks
 } from "./types";
 import { isBillInPayPeriod } from "./bill";
-import { chunk, isBetween } from "./utils";
+import { isBetween } from "./utils";
 
 export function validatePayPeriod(
   payPeriod: PayPeriod,
