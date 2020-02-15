@@ -6,7 +6,7 @@ import {
 } from "date-fns";
 
 export function getPaydays(
-  type: "weekly" | "bi-weekly" | "bi-monthly" | "monthly",
+  type: "weekly" | "bi_weekly" | "semi_monthly" | "monthly",
   startOn: Date,
   numPaydays = 12,
   opts?: { biMonthly?: [number, number]; monthly?: number }
@@ -16,13 +16,13 @@ export function getPaydays(
       return new Array(numPaydays).fill(startOn).map((payday, index) => {
         return addWeeks(payday, index);
       });
-    case "bi-weekly":
+    case "bi_weekly":
       return new Array(numPaydays).fill(startOn).map((payday, index) => {
         return addWeeks(payday, index * 2);
       });
-    case "bi-monthly":
+    case "semi_monthly":
       if (!opts || !opts.biMonthly) {
-        throw new Error("biMonthly required when providing bi-monthly");
+        throw new Error("biMonthly required when providing semi_monthly");
       }
       const [dayOne, dayTwo] = opts.biMonthly as [number, number];
       if (

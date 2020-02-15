@@ -100,7 +100,7 @@ describe("Integration Tests", () => {
         }
       })
     ].map(bill => addFutureBillDates(bill, 24));
-    const paydays = getPaydays("bi-weekly", startingDate) as Date[];
+    const paydays = getPaydays("bi_weekly", startingDate) as Date[];
     const paychecks = [
       createPaycheck({
         amount: 1337.94,

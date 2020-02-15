@@ -17,9 +17,9 @@ describe("getPaydays", () => {
       new Date(2020, 1, 7)
     ]);
   });
-  it("works with bi-weekly option", () => {
+  it("works with bi_weekly option", () => {
     expect(
-      getPaydays("bi-weekly", new Date(2019, 10, 22, 0, 0, 0), 12)
+      getPaydays("bi_weekly", new Date(2019, 10, 22, 0, 0, 0), 12)
     ).toEqual([
       new Date(2019, 10, 22),
       new Date(2019, 11, 6),
@@ -35,9 +35,9 @@ describe("getPaydays", () => {
       new Date(2020, 3, 24)
     ]);
   });
-  it("works with bi-monthly option", () => {
+  it("works with semi_monthly option", () => {
     expect(
-      getPaydays("bi-monthly", new Date(2019, 10, 30, 0, 0, 0), 12, {
+      getPaydays("semi_monthly", new Date(2019, 10, 30, 0, 0, 0), 12, {
         biMonthly: [15, 30]
       })
     ).toEqual([

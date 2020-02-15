@@ -150,7 +150,7 @@ describe("isBillInPayPeriod", () => {
     startOn: startingDate,
     due: { monthly: 1 }
   });
-  const paydays = getPaydays("bi-weekly", startingDate) as Date[];
+  const paydays = getPaydays("bi_weekly", startingDate) as Date[];
   const payPeriods = validatePayPeriods(
     getPayPeriods(paydays),
     [addFutureBillDates(bill)],

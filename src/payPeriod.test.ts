@@ -2,7 +2,7 @@ import { getPayPeriods, formatPayPeriodDate } from "./payPeriod";
 import { getPaydays } from "./payday";
 
 const startingDate = new Date(2019, 10, 22, 0, 0, 0);
-const paydays = getPaydays("bi-weekly", startingDate) as Date[];
+const paydays = getPaydays("bi_weekly", startingDate) as Date[];
 const payPeriods = getPayPeriods(paydays);
 
 describe("getPayPeriods", () => {
