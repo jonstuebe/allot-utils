@@ -11,7 +11,7 @@ describe("Integration Tests", () => {
     const bills: Bills = [
       createBill({
         name: "Rent",
-        amount: 1041.6,
+        amount: 1500,
         autoPay: false,
         startOn: startingDate,
         due: {
@@ -25,15 +25,6 @@ describe("Integration Tests", () => {
         startOn: startingDate,
         due: {
           monthly: 5
-        }
-      }),
-      createBill({
-        name: "Slate Card",
-        amount: 56,
-        autoPay: true,
-        startOn: startingDate,
-        due: {
-          monthly: 7
         }
       }),
       createBill({
@@ -100,39 +91,12 @@ describe("Integration Tests", () => {
         }
       }),
       createBill({
-        name: "SouthWest Card",
-        amount: 37,
-        autoPay: false,
-        startOn: startingDate,
-        due: {
-          monthly: 27
-        }
-      }),
-      createBill({
         name: "Dollar Shave Club",
         amount: 5,
         autoPay: true,
         startOn: startingDate,
         due: {
           monthly: 30
-        }
-      }),
-      createBill({
-        name: "Kindergarten Tuition",
-        amount: 150,
-        autoPay: true,
-        startOn: startingDate,
-        due: {
-          monthly: 11
-        }
-      }),
-      createBill({
-        name: "Childcare",
-        amount: 200,
-        autoPay: false,
-        startOn: new Date(2019, 10, 23, 0, 0, 0),
-        due: {
-          weekly: 6
         }
       })
     ].map(bill => addFutureBillDates(bill, 24));
@@ -141,12 +105,12 @@ describe("Integration Tests", () => {
       createPaycheck({
         amount: 1337.94,
         date: new Date(2019, 10, 22, 0, 0, 0),
-        source: "Baby Doll Hair"
+        source: "SmartRent"
       }),
       createPaycheck({
         amount: 1823.3,
         date: new Date(2019, 11, 6, 0, 0, 0),
-        source: "Baby Doll Hair"
+        source: "SmartRent"
       })
     ];
     const payPeriods = validatePayPeriods(
