@@ -9,7 +9,7 @@ export function getPaydays(
   type: "weekly" | "bi_weekly" | "semi_monthly" | "monthly",
   startOn: Date,
   numPaydays = 12,
-  opts?: { biMonthly?: [number, number]; monthly?: number }
+  opts?: { semiMonthly?: [number, number]; monthly?: number }
 ): Array<Date | null> {
   switch (type) {
     case "weekly":
@@ -21,16 +21,16 @@ export function getPaydays(
         return addWeeks(payday, index * 2);
       });
     case "semi_monthly":
-      if (!opts || !opts.biMonthly) {
-        throw new Error("biMonthly required when providing semi_monthly");
+      if (!opts || !opts.semiMonthly) {
+        throw new Error("semiMonthly required when providing semi_monthly");
       }
-      const [dayOne, dayTwo] = opts.biMonthly as [number, number];
+      const [dayOne, dayTwo] = opts.semiMonthly as [number, number];
       if (
         getDayOfMonth(startOn) !== dayOne &&
         getDayOfMonth(startOn) !== dayTwo
       ) {
         throw new Error(
-          "startOn date must match one of the values provided to opts.biMonthly"
+          "startOn date must match one of the values provided to opts.semiMonthly"
         );
       }
 

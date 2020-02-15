@@ -38,7 +38,7 @@ describe("getPaydays", () => {
   it("works with semi_monthly option", () => {
     expect(
       getPaydays("semi_monthly", new Date(2019, 10, 30, 0, 0, 0), 12, {
-        biMonthly: [15, 30]
+        semiMonthly: [15, 30]
       })
     ).toEqual([
       null,
