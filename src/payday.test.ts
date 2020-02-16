@@ -50,6 +50,7 @@ describe("getPaydays", () => {
         12
       ).map(date => format(date, "MM-dd-y"))
     ).toEqual([
+      "11-15-2019",
       "11-29-2019",
       "12-13-2019",
       "12-31-2019",

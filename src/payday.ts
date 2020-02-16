@@ -68,9 +68,6 @@ export function getPaydays(
       return new Array(Math.ceil(numPaydays / 2))
         .fill(startOn)
         .map((payday, index) => {
-          if (index === 0) {
-            return getSemiMonthlyForDate(payday);
-          }
           return getSemiMonthlyForMonth(addMonths(payday, index));
         })
         .reduce((acc, cur) => acc.concat(cur), []);
