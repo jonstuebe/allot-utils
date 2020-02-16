@@ -1,3 +1,10 @@
+export {
+  setDate as setDayOfMonth,
+  getDate as getDayOfMonth,
+  getDay as getDayOfWeek,
+  setDay as setDayOfWeek
+} from "date-fns";
+
 export * from "./bill";
 export * from "./paycheck";
 export * from "./payday";

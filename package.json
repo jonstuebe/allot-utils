@@ -18,17 +18,23 @@
     "dev": "jest --watch",
     "test": "jest",
     "start": "tsc -w",
-    "build": "tsc"
+    "build": "tsc",
+    "docs": "node scripts/docs"
   },
   "peerDependencies": {
-    "date-fns": ">= 2.8.x"
+    "date-fns": ">= 2.8.x",
+    "date-fns-holiday-us": ">= 0.1.2"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^24.0.23",
+    "chalk": "^3.0.0",
     "date-fns": "^2.8.1",
+    "date-fns-holiday-us": "^0.1.2",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
+    "typedoc": "^0.16.10",
+    "typedoc-plugin-markdown": "^2.2.16",
     "typescript": "^3.7.3"
   }
 }
