@@ -19,7 +19,8 @@
     "test": "jest",
     "start": "tsc -w",
     "build": "tsc",
-    "docs": "node scripts/docs"
+    "docs": "node scripts/docs",
+    "prepare": "yarn build && yarn docs"
   },
   "peerDependencies": {
     "date-fns": ">= 2.8.x",
