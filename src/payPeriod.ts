@@ -8,7 +8,7 @@ import {
   Paycheck,
   Paychecks
 } from "./types";
-import { isBillInPayPeriod } from "./bill";
+import { isBillInPayPeriod, getBillAmountForPayPeriod } from "./bill";
 import { isBetween } from "./utils";
 
 export function validatePayPeriod(
@@ -45,7 +45,10 @@ export function totalIncomeInPayPeriod(payPeriod: PayPeriod) {
 }
 
 export function totalBillsInPayPeriod(payPeriod: PayPeriod) {
-  return payPeriod.bills.reduce((acc, bill: Bill) => acc + bill.amount, 0);
+  return payPeriod.bills.reduce(
+    (acc, bill: Bill) => acc + getBillAmountForPayPeriod(bill, payPeriod),
+    0
+  );
 }
 
 export function getPayPeriods(paydays: Date[]): PayPeriod[] {

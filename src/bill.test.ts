@@ -71,18 +71,18 @@ describe("getFutureBillDates", () => {
     const bill = createBill({
       name: "Childcare",
       amount: 350,
-      startOn: new Date(2019, 11, 7),
+      startOn: new Date(2020, 1, 1),
       due: { weekly: 6 }
     });
     expect(addFutureBillDates(bill)).toEqual({
       name: "Childcare",
       amount: 350,
       due: { weekly: 6 },
-      startOn: new Date(2019, 11, 7),
+      startOn: new Date(2020, 1, 1),
       dueDates: [
-        new Date(2019, 11, 7),
-        new Date(2019, 11, 14),
-        new Date(2019, 11, 21)
+        new Date(2020, 1, 1),
+        new Date(2020, 1, 8),
+        new Date(2020, 1, 15)
       ]
     });
   });
@@ -143,7 +143,7 @@ describe("addFutureBillDates", () => {
 });
 
 describe("isBillInPayPeriod", () => {
-  const startingDate = new Date(2020, 1, 14, 0, 0, 0);
+  const startingDate = new Date(2020, 2, 27, 0, 0, 0);
   const bill = createBill({
     name: "Credit Card",
     amount: 37,
@@ -172,4 +172,24 @@ describe("isBillInPayPeriod", () => {
       isBillInPayPeriod(addFutureBillDates(bill), payPeriods[0])
     ).toBeTruthy();
   });
+});
+
+describe("isBillInPayPeriod (weekly)", () => {
+  const startingDate = new Date(2020, 1, 14, 0, 0, 0);
+  const bill = createBill({
+    name: "Childcare",
+    amount: 50,
+    startOn: new Date(2020, 1, 1),
+    due: { weekly: 6 }
+  });
+  const paydays = getPaydays("bi_weekly", startingDate) as Date[];
+  const payPeriods = validatePayPeriods(
+    getPayPeriods(paydays),
+    [addFutureBillDates(bill)],
+    []
+  );
+
+  expect(
+    isBillInPayPeriod(addFutureBillDates(bill), payPeriods[0])
+  ).toBeTruthy();
 });

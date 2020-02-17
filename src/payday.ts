@@ -4,6 +4,7 @@ import {
   setDate as setDayOfMonth,
   getDate as getDayOfMonth,
   getDay as getDayOfWeek,
+  startOfDay,
   addDays,
   lastDayOfMonth,
   isAfter
@@ -55,6 +56,7 @@ export function getPaydays(
   numPaydays = 12,
   opts?: { monthly?: number }
 ): Array<Date> {
+  startOn = startOfDay(startOn);
   switch (type) {
     case "weekly":
       return new Array(numPaydays).fill(startOn).map((payday, index) => {

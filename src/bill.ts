@@ -72,18 +72,25 @@ export function addFutureBillDates(bill: Bill, numDates = 3) {
   };
 }
 
-export function isBillInPayPeriod(
+export function getBillAmountForPayPeriod(bill: Bill, payPeriod: PayPeriod) {
+  const dates = getBillDatesForPayPeriod(bill, payPeriod);
+  return bill.amount * dates.length;
+}
+
+export function isBillInPayPeriod(bill: Bill, payPeriod: PayPeriod): boolean {
+  return getBillDatesForPayPeriod(bill, payPeriod).length > 0;
+}
+
+export function getBillDatesForPayPeriod(
   { dueDates }: Bill,
   { start, end }: PayPeriod
-): boolean {
+) {
   if (dueDates.length === 0) {
     throw new Error("No due dates found in bill. Have you added them?");
   }
-  return (
-    dueDates.filter(dueDate => {
-      return isBetween(dueDate, start, end, true);
-    }).length > 0
-  );
+  return dueDates.filter(dueDate => {
+    return isBetween(dueDate, start, end, true);
+  });
 }
 
 export function createBill(bill: InitialBill) {
