@@ -143,12 +143,12 @@ describe("addFutureBillDates", () => {
 });
 
 describe("isBillInPayPeriod", () => {
-  const startingDate = new Date(2019, 10, 22, 0, 0, 0);
+  const startingDate = new Date(2020, 1, 14, 0, 0, 0);
   const bill = createBill({
-    name: "Rent",
-    amount: 1200,
-    startOn: startingDate,
-    due: { monthly: 1 }
+    name: "Credit Card",
+    amount: 37,
+    startOn: new Date(2020, 1, 27),
+    due: { monthly: 27 }
   });
   const paydays = getPaydays("bi_weekly", startingDate) as Date[];
   const payPeriods = validatePayPeriods(

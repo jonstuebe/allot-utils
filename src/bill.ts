@@ -81,7 +81,7 @@ export function isBillInPayPeriod(
   }
   return (
     dueDates.filter(dueDate => {
-      return isBetween(dueDate, start, end);
+      return isBetween(dueDate, start, end, true);
     }).length > 0
   );
 }
