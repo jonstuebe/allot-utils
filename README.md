@@ -43,6 +43,8 @@ npm i @jonstuebe/allot-utils date-fns date-fns-holiday-us
 * [firstDayOfMonth](README.md#firstdayofmonth)
 * [formatCurrency](README.md#formatcurrency)
 * [formatPayPeriodDate](README.md#formatpayperioddate)
+* [getBillAmountForPayPeriod](README.md#getbillamountforpayperiod)
+* [getBillDatesForPayPeriod](README.md#getbilldatesforpayperiod)
 * [getFutureBillDates](README.md#getfuturebilldates)
 * [getPayPeriods](README.md#getpayperiods)
 * [getPaydays](README.md#getpaydays)
@@ -155,7 +157,7 @@ ___
 
 ▸ **createBill**(`bill`: [InitialBill](interfaces/initialbill.md)): *object*
 
-*Defined in [bill.ts:89](https://github.com/jonstuebe/allot-utils/blob/master/src/bill.ts#L89)*
+*Defined in [bill.ts:96](https://github.com/jonstuebe/allot-utils/blob/master/src/bill.ts#L96)*
 
 **Parameters:**
 
@@ -189,7 +191,7 @@ ___
 
 ▸ **firstDayOfMonth**(`date`: Date): *Date*
 
-*Defined in [payday.ts:12](https://github.com/jonstuebe/allot-utils/blob/master/src/payday.ts#L12)*
+*Defined in [payday.ts:13](https://github.com/jonstuebe/allot-utils/blob/master/src/payday.ts#L13)*
 
 **Parameters:**
 
@@ -223,7 +225,7 @@ ___
 
 ▸ **formatPayPeriodDate**(`__namedParameters`: object, `formatType`: string): *string*
 
-*Defined in [payPeriod.ts:65](https://github.com/jonstuebe/allot-utils/blob/master/src/payPeriod.ts#L65)*
+*Defined in [payPeriod.ts:68](https://github.com/jonstuebe/allot-utils/blob/master/src/payPeriod.ts#L68)*
 
 **Parameters:**
 
@@ -237,6 +239,48 @@ Name | Type |
 ▪`Default value`  **formatType**: *string*= "MMM do y"
 
 **Returns:** *string*
+
+___
+
+###  getBillAmountForPayPeriod
+
+▸ **getBillAmountForPayPeriod**(`bill`: [Bill](interfaces/bill.md), `payPeriod`: [PayPeriod](interfaces/payperiod.md)): *number*
+
+*Defined in [bill.ts:75](https://github.com/jonstuebe/allot-utils/blob/master/src/bill.ts#L75)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`bill` | [Bill](interfaces/bill.md) |
+`payPeriod` | [PayPeriod](interfaces/payperiod.md) |
+
+**Returns:** *number*
+
+___
+
+###  getBillDatesForPayPeriod
+
+▸ **getBillDatesForPayPeriod**(`__namedParameters`: object, `__namedParameters`: object): *Date[]*
+
+*Defined in [bill.ts:84](https://github.com/jonstuebe/allot-utils/blob/master/src/bill.ts#L84)*
+
+**Parameters:**
+
+▪ **__namedParameters**: *object*
+
+Name | Type |
+------ | ------ |
+`dueDates` | Date[] |
+
+▪ **__namedParameters**: *object*
+
+Name | Type |
+------ | ------ |
+`end` | Date |
+`start` | Date |
+
+**Returns:** *Date[]*
 
 ___
 
@@ -265,7 +309,7 @@ ___
 
 ▸ **getPayPeriods**(`paydays`: Date[]): *[PayPeriod](interfaces/payperiod.md)[]*
 
-*Defined in [payPeriod.ts:51](https://github.com/jonstuebe/allot-utils/blob/master/src/payPeriod.ts#L51)*
+*Defined in [payPeriod.ts:54](https://github.com/jonstuebe/allot-utils/blob/master/src/payPeriod.ts#L54)*
 
 **Parameters:**
 
@@ -281,7 +325,7 @@ ___
 
 ▸ **getPaydays**(`type`: "weekly" | "bi_weekly" | "semi_monthly" | "monthly", `startOn`: Date, `numPaydays`: number, `opts?`: undefined | object): *Array‹Date›*
 
-*Defined in [payday.ts:52](https://github.com/jonstuebe/allot-utils/blob/master/src/payday.ts#L52)*
+*Defined in [payday.ts:53](https://github.com/jonstuebe/allot-utils/blob/master/src/payday.ts#L53)*
 
 **Parameters:**
 
@@ -300,7 +344,7 @@ ___
 
 ▸ **getSemiMonthlyForDate**(`date`: Date): *Date[]*
 
-*Defined in [payday.ts:16](https://github.com/jonstuebe/allot-utils/blob/master/src/payday.ts#L16)*
+*Defined in [payday.ts:17](https://github.com/jonstuebe/allot-utils/blob/master/src/payday.ts#L17)*
 
 **Parameters:**
 
@@ -316,7 +360,7 @@ ___
 
 ▸ **getSemiMonthlyForMonth**(`date`: Date): *Date[]*
 
-*Defined in [payday.ts:48](https://github.com/jonstuebe/allot-utils/blob/master/src/payday.ts#L48)*
+*Defined in [payday.ts:49](https://github.com/jonstuebe/allot-utils/blob/master/src/payday.ts#L49)*
 
 **Parameters:**
 
@@ -349,24 +393,16 @@ ___
 
 ###  isBillInPayPeriod
 
-▸ **isBillInPayPeriod**(`__namedParameters`: object, `__namedParameters`: object): *boolean*
+▸ **isBillInPayPeriod**(`bill`: [Bill](interfaces/bill.md), `payPeriod`: [PayPeriod](interfaces/payperiod.md)): *boolean*
 
-*Defined in [bill.ts:75](https://github.com/jonstuebe/allot-utils/blob/master/src/bill.ts#L75)*
+*Defined in [bill.ts:80](https://github.com/jonstuebe/allot-utils/blob/master/src/bill.ts#L80)*
 
 **Parameters:**
 
-▪ **__namedParameters**: *object*
-
 Name | Type |
 ------ | ------ |
-`dueDates` | Date[] |
-
-▪ **__namedParameters**: *object*
-
-Name | Type |
------- | ------ |
-`end` | Date |
-`start` | Date |
+`bill` | [Bill](interfaces/bill.md) |
+`payPeriod` | [PayPeriod](interfaces/payperiod.md) |
 
 **Returns:** *boolean*
 
@@ -376,7 +412,7 @@ ___
 
 ▸ **isPaycheckInPayPeriod**(`paycheck`: [Paycheck](interfaces/paycheck.md), `payPeriod`: [PayPeriod](interfaces/payperiod.md)): *Boolean*
 
-*Defined in [payPeriod.ts:72](https://github.com/jonstuebe/allot-utils/blob/master/src/payPeriod.ts#L72)*
+*Defined in [payPeriod.ts:75](https://github.com/jonstuebe/allot-utils/blob/master/src/payPeriod.ts#L75)*
 
 **Parameters:**
 
