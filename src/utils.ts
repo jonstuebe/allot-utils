@@ -20,6 +20,15 @@ export function chunk(array: Array<any>, size: number): Array<any> {
   return chunked_arr;
 }
 
+export function parseISO(dateISO: string): Date {
+  const [year, month, day] = dateISO
+    .substr(0, 10)
+    .split("-")
+    .map(item => Number(item));
+
+  return new Date(year, month - 1, day);
+}
+
 export function isBetween(
   date: Date,
   start: Date,

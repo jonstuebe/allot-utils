@@ -119,6 +119,6 @@ describe("Integration Tests", () => {
       paychecks
     );
 
-    renderTable(payPeriods);
+    // renderTable(payPeriods);
   });
 });

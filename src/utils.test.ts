@@ -1,4 +1,4 @@
-import { chunk, isBetween, formatCurrency } from "./utils";
+import { chunk, isBetween, formatCurrency, parseISO } from "./utils";
 
 describe("isBetween", () => {
   it("return truthy", () => {
@@ -18,6 +18,14 @@ describe("isBetween", () => {
         new Date(2020, 0, 31)
       )
     ).toBeFalsy();
+  });
+});
+
+describe("parseISO", () => {
+  it("returns a date object from a ISO string", () => {
+    expect(parseISO("2020-02-01T07:00:00.000Z").toISOString()).toEqual(
+      "2020-02-01T07:00:00.000Z"
+    );
   });
 });
 
