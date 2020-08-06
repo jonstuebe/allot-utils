@@ -1,84 +1,146 @@
 import { getPayPeriods, formatPayPeriodDate } from "./payPeriod";
 import { getPaydays } from "./payday";
+import { PayFrequencyEnum } from "./types";
+import { createDate } from "./utils";
 
-const startingDate = new Date(2019, 10, 22, 0, 0, 0);
-const paydays = getPaydays("bi_weekly", startingDate) as Date[];
+const startingDate = createDate(2019, 9, 22);
+const paydays = getPaydays(PayFrequencyEnum.biWeekly, startingDate) as Date[];
 const payPeriods = getPayPeriods(paydays);
 
 describe("getPayPeriods", () => {
   it("returns an array of payPeriods when given an array of dates", () => {
     expect(payPeriods).toEqual([
       {
-        start: new Date("2019-11-22T07:00:00.000Z"),
-        end: new Date("2019-12-05T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2019, 10, 5),
+        paychecks: [],
+        start: createDate(2019, 9, 22)
       },
       {
-        start: new Date("2019-12-06T07:00:00.000Z"),
-        end: new Date("2019-12-19T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2019, 10, 19),
+        paychecks: [],
+        start: createDate(2019, 10, 6)
       },
       {
-        start: new Date("2019-12-20T07:00:00.000Z"),
-        end: new Date("2020-01-02T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2019, 11, 2),
+        paychecks: [],
+        start: createDate(2019, 10, 20)
       },
       {
-        start: new Date("2020-01-03T07:00:00.000Z"),
-        end: new Date("2020-01-16T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2019, 11, 16),
+        paychecks: [],
+        start: createDate(2019, 11, 3)
       },
       {
-        start: new Date("2020-01-17T07:00:00.000Z"),
-        end: new Date("2020-01-30T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2019, 11, 30),
+        paychecks: [],
+        start: createDate(2019, 11, 17)
       },
       {
-        start: new Date("2020-01-31T07:00:00.000Z"),
-        end: new Date("2020-02-13T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2019, 12, 14),
+        paychecks: [],
+        start: createDate(2019, 12, 1)
       },
       {
-        start: new Date("2020-02-14T07:00:00.000Z"),
-        end: new Date("2020-02-27T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2019, 12, 28),
+        paychecks: [],
+        start: createDate(2019, 12, 15)
       },
       {
-        start: new Date("2020-02-28T07:00:00.000Z"),
-        end: new Date("2020-03-12T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2020, 1, 11),
+        paychecks: [],
+        start: createDate(2019, 12, 29)
       },
       {
-        start: new Date("2020-03-13T07:00:00.000Z"),
-        end: new Date("2020-03-26T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2020, 1, 25),
+        paychecks: [],
+        start: createDate(2020, 1, 12)
       },
       {
-        start: new Date("2020-03-27T07:00:00.000Z"),
-        end: new Date("2020-04-09T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2020, 2, 8),
+        paychecks: [],
+        start: createDate(2020, 1, 26)
       },
       {
-        start: new Date("2020-04-10T07:00:00.000Z"),
-        end: new Date("2020-04-23T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2020, 2, 22),
+        paychecks: [],
+        start: createDate(2020, 2, 9)
       },
       {
-        start: new Date("2020-04-24T07:00:00.000Z"),
-        end: new Date("2020-05-08T07:00:00.000Z"),
         bills: [],
-        paychecks: []
+        end: createDate(2020, 3, 7),
+        paychecks: [],
+        start: createDate(2020, 2, 23)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 3, 21),
+        paychecks: [],
+        start: createDate(2020, 3, 8)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 4, 4),
+        paychecks: [],
+        start: createDate(2020, 3, 22)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 4, 18),
+        paychecks: [],
+        start: createDate(2020, 4, 5)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 5, 2),
+        paychecks: [],
+        start: createDate(2020, 4, 19)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 5, 16),
+        paychecks: [],
+        start: createDate(2020, 5, 3)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 5, 30),
+        paychecks: [],
+        start: createDate(2020, 5, 17)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 6, 13),
+        paychecks: [],
+        start: createDate(2020, 5, 31)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 6, 27),
+        paychecks: [],
+        start: createDate(2020, 6, 14)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 7, 11),
+        paychecks: [],
+        start: createDate(2020, 6, 28)
+      },
+      {
+        bills: [],
+        end: createDate(2020, 7, 26),
+        paychecks: [],
+        start: createDate(2020, 7, 12)
       }
     ]);
   });
@@ -87,7 +149,7 @@ describe("getPayPeriods", () => {
 describe("formatPayPeriodDate", () => {
   it("returns a date string", () => {
     expect(formatPayPeriodDate(payPeriods[0])).toEqual(
-      "Nov 22nd 2019 - Dec 5th 2019"
+      "Sep 22nd 2019 - Oct 5th 2019"
     );
   });
 });

@@ -1,87 +1,107 @@
 import { getPaydays } from "./payday";
-import { format } from "date-fns";
+import { createDate } from "./utils";
+import { PayFrequencyEnum } from "./types";
 
 describe("getPaydays", () => {
   it("works with weekly option", () => {
     expect(
-      getPaydays("weekly", new Date(2019, 10, 22, 0, 0, 0), 12).map(date =>
-        format(date, "MM-dd-y")
-      )
+      getPaydays(PayFrequencyEnum.weekly, createDate(2019, 11, 22))
     ).toEqual([
-      "11-22-2019",
-      "11-29-2019",
-      "12-06-2019",
-      "12-13-2019",
-      "12-20-2019",
-      "12-27-2019",
-      "01-03-2020",
-      "01-10-2020",
-      "01-17-2020",
-      "01-24-2020",
-      "01-31-2020",
-      "02-07-2020"
+      createDate(2019, 11, 22),
+      createDate(2019, 11, 29),
+      createDate(2019, 12, 6),
+      createDate(2019, 12, 13),
+      createDate(2019, 12, 20),
+      createDate(2019, 12, 27),
+      createDate(2020, 1, 3),
+      createDate(2020, 1, 10),
+      createDate(2020, 1, 17),
+      createDate(2020, 1, 24),
+      createDate(2020, 1, 31),
+      createDate(2020, 2, 7),
+      createDate(2020, 2, 14),
+      createDate(2020, 2, 21),
+      createDate(2020, 2, 28),
+      createDate(2020, 3, 6),
+      createDate(2020, 3, 13),
+      createDate(2020, 3, 20),
+      createDate(2020, 3, 27),
+      createDate(2020, 4, 3),
+      createDate(2020, 4, 10),
+      createDate(2020, 4, 17),
+      createDate(2020, 4, 24),
+      createDate(2020, 5, 1),
+      createDate(2020, 5, 8),
+      createDate(2020, 5, 15),
+      createDate(2020, 5, 22),
+      createDate(2020, 5, 29),
+      createDate(2020, 6, 5),
+      createDate(2020, 6, 12),
+      createDate(2020, 6, 19),
+      createDate(2020, 6, 26),
+      createDate(2020, 7, 3)
     ]);
   });
+
   it("works with bi_weekly option", () => {
     expect(
-      getPaydays("bi_weekly", new Date(2019, 10, 22, 0, 0, 0), 12).map(date =>
-        format(date, "MM-dd-y")
-      )
+      getPaydays(PayFrequencyEnum.biWeekly, createDate(2019, 11, 22))
     ).toEqual([
-      "11-22-2019",
-      "12-06-2019",
-      "12-20-2019",
-      "01-03-2020",
-      "01-17-2020",
-      "01-31-2020",
-      "02-14-2020",
-      "02-28-2020",
-      "03-13-2020",
-      "03-27-2020",
-      "04-10-2020",
-      "04-24-2020"
+      createDate(2019, 11, 22),
+      createDate(2019, 12, 6),
+      createDate(2019, 12, 20),
+      createDate(2020, 1, 3),
+      createDate(2020, 1, 17),
+      createDate(2020, 1, 31),
+      createDate(2020, 2, 14),
+      createDate(2020, 2, 28),
+      createDate(2020, 3, 13),
+      createDate(2020, 3, 27),
+      createDate(2020, 4, 10),
+      createDate(2020, 4, 24),
+      createDate(2020, 5, 8),
+      createDate(2020, 5, 22),
+      createDate(2020, 6, 5),
+      createDate(2020, 6, 19),
+      createDate(2020, 7, 3),
+      createDate(2020, 7, 17)
     ]);
   });
+
   it("works with semi_monthly option", () => {
     expect(
-      getPaydays(
-        "semi_monthly",
-        new Date(2019, 10, 15, 0, 0, 0),
-        12
-      ).map(date => format(date, "MM-dd-y"))
+      getPaydays(PayFrequencyEnum.semiMonthly, createDate(2019, 11, 15))
     ).toEqual([
-      "11-15-2019",
-      "11-29-2019",
-      "12-13-2019",
-      "12-31-2019",
-      "01-15-2020",
-      "01-31-2020",
-      "02-14-2020",
-      "02-28-2020",
-      "03-13-2020",
-      "03-31-2020",
-      "04-15-2020",
-      "04-30-2020"
+      createDate(2019, 11, 15),
+      createDate(2019, 11, 29),
+      createDate(2020, 1, 15),
+      createDate(2020, 1, 31),
+      createDate(2020, 3, 13),
+      createDate(2020, 3, 31),
+      createDate(2020, 5, 15),
+      createDate(2020, 5, 29),
+      createDate(2020, 7, 15),
+      createDate(2020, 7, 31),
+      createDate(2020, 9, 15),
+      createDate(2020, 9, 30)
     ]);
   });
+
   it("works with monthly option", () => {
     expect(
-      getPaydays("monthly", new Date(2019, 10, 30, 0, 0, 0), 12, {
+      getPaydays(PayFrequencyEnum.monthly, createDate(2019, 11, 30), {
         monthly: 30
-      }).map(date => format(date, "MM-dd-y"))
+      })
     ).toEqual([
-      "11-30-2019",
-      "12-30-2019",
-      "01-30-2020",
-      "02-29-2020",
-      "03-30-2020",
-      "04-30-2020",
-      "05-30-2020",
-      "06-30-2020",
-      "07-30-2020",
-      "08-30-2020",
-      "09-30-2020",
-      "10-30-2020"
+      createDate(2019, 11, 30),
+      createDate(2019, 12, 30),
+      createDate(2020, 1, 30),
+      createDate(2020, 2, 29),
+      createDate(2020, 3, 30),
+      createDate(2020, 4, 30),
+      createDate(2020, 5, 30),
+      createDate(2020, 6, 30),
+      createDate(2020, 7, 30)
     ]);
   });
 });

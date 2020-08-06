@@ -10,6 +10,8 @@ import {
   isAfter
 } from "date-fns";
 
+import { PayFrequencyEnum } from "./types";
+
 export function firstDayOfMonth(date: Date): Date {
   return setDayOfMonth(date, 1);
 }
@@ -51,41 +53,52 @@ export function getSemiMonthlyForMonth(date: Date): Date[] {
 }
 
 export function getPaydays(
-  type: "weekly" | "bi_weekly" | "semi_monthly" | "monthly",
+  payFrequency: PayFrequencyEnum,
   startOn: Date,
-  numPaydays = 12,
   opts?: { monthly?: number }
-): Array<Date> {
+): Date[] {
   startOn = startOfDay(startOn);
-  switch (type) {
-    case "weekly":
-      return new Array(numPaydays).fill(startOn).map((payday, index) => {
-        return addWeeks(payday, index);
-      });
-    case "bi_weekly":
-      return new Array(numPaydays).fill(startOn).map((payday, index) => {
-        return addWeeks(payday, index * 2);
-      });
-    case "semi_monthly":
-      return new Array(Math.ceil(numPaydays / 2))
-        .fill(startOn)
-        .map((payday, index) => {
-          return getSemiMonthlyForMonth(addMonths(payday, index));
-        })
-        .reduce((acc, cur) => acc.concat(cur), []);
-    case "monthly":
-      if (!opts || !opts.monthly) {
-        throw new Error("monthly required when providing monthly");
-      }
-      const dayOfMonth = opts.monthly as number;
-      if (getDayOfMonth(startOn) !== dayOfMonth) {
-        throw new Error(
-          "startOn date must match the value provided to opts.monthly"
-        );
-      }
 
-      return new Array(numPaydays).fill(startOn).map((payday, index) => {
-        return addMonths(payday, index);
-      });
+  let paydays: Date[] = [];
+  let generate: boolean = true;
+
+  while (generate) {
+    let monthPaydays;
+    let curIndex: number = paydays.length;
+    let lastPaydayGenerated = paydays[paydays.length - 1];
+
+    switch (payFrequency) {
+      case PayFrequencyEnum.weekly:
+        monthPaydays = addWeeks(startOn, curIndex);
+        break;
+
+      case PayFrequencyEnum.biWeekly:
+        monthPaydays = addWeeks(startOn, curIndex * 2);
+        break;
+
+      case PayFrequencyEnum.semiMonthly:
+        monthPaydays = getSemiMonthlyForMonth(addMonths(startOn, curIndex));
+        break;
+
+      case PayFrequencyEnum.monthly:
+        if (!opts || !opts.monthly) {
+          throw new Error("monthly required when providing monthly");
+        }
+        const dayOfMonth = opts.monthly as number;
+        if (getDayOfMonth(startOn) !== dayOfMonth) {
+          throw new Error(
+            "startOn date must match the value provided to opts.monthly"
+          );
+        }
+
+        monthPaydays = addMonths(startOn, curIndex);
+        break;
+    }
+
+    paydays = paydays.concat(monthPaydays);
+    if (isAfter(lastPaydayGenerated, addMonths(new Date(), 3))) {
+      generate = false;
+    }
   }
+  return paydays;
 }

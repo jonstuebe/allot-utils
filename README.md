@@ -53,6 +53,7 @@ npm i @jonstuebe/allot-utils date-fns date-fns-holiday-us
 * [isBetween](README.md#isbetween)
 * [isBillInPayPeriod](README.md#isbillinpayperiod)
 * [isPaycheckInPayPeriod](README.md#ispaycheckinpayperiod)
+* [parseISO](README.md#parseiso)
 * [renderTable](README.md#rendertable)
 * [totalBillsInPayPeriod](README.md#totalbillsinpayperiod)
 * [totalIncomeInPayPeriod](README.md#totalincomeinpayperiod)
@@ -207,7 +208,7 @@ ___
 
 ▸ **formatCurrency**(`amount`: number, `country`: string, `currency`: string): *string*
 
-*Defined in [utils.ts:38](https://github.com/jonstuebe/allot-utils/blob/master/src/utils.ts#L38)*
+*Defined in [utils.ts:47](https://github.com/jonstuebe/allot-utils/blob/master/src/utils.ts#L47)*
 
 **Parameters:**
 
@@ -376,7 +377,7 @@ ___
 
 ▸ **isBetween**(`date`: Date, `start`: Date, `end`: Date, `includeEqual`: boolean): *Boolean*
 
-*Defined in [utils.ts:23](https://github.com/jonstuebe/allot-utils/blob/master/src/utils.ts#L23)*
+*Defined in [utils.ts:32](https://github.com/jonstuebe/allot-utils/blob/master/src/utils.ts#L32)*
 
 **Parameters:**
 
@@ -425,11 +426,27 @@ Name | Type |
 
 ___
 
+###  parseISO
+
+▸ **parseISO**(`dateISO`: string): *Date*
+
+*Defined in [utils.ts:23](https://github.com/jonstuebe/allot-utils/blob/master/src/utils.ts#L23)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`dateISO` | string |
+
+**Returns:** *Date*
+
+___
+
 ###  renderTable
 
 ▸ **renderTable**(`payPeriods`: [PayPeriods](README.md#payperiods)): *void*
 
-*Defined in [utils.ts:49](https://github.com/jonstuebe/allot-utils/blob/master/src/utils.ts#L49)*
+*Defined in [utils.ts:58](https://github.com/jonstuebe/allot-utils/blob/master/src/utils.ts#L58)*
 
 **Parameters:**
 

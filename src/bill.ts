@@ -1,80 +1,53 @@
 import {
-  addMonths,
-  addYears,
-  addWeeks,
-  getDaysInMonth,
-  getDay as getDayOfWeek,
+  isAfter,
+  isSameDay,
+  setDay as setDayOfWeek,
   setDate as setDayOfMonth,
-  isEqual
+  setMonth,
+  eachDayOfInterval
 } from "date-fns";
 
-import { isBetween } from "./utils";
-import {
-  InitialBill,
-  Bill,
-  PayPeriod,
-  DayOfWeekIndex,
-  MonthIndex,
-  YearIndexes
-} from "./types";
+import { Bill, PayPeriod } from "./types";
 
-export function getFutureBillDates(
-  { due, startOn }: Bill,
-  numDates = 3
-): Date[] {
-  if (due.weekly) {
-    let weekly = due.weekly as DayOfWeekIndex;
-
-    if (getDayOfWeek(startOn) !== weekly) {
-      throw new Error(
-        "startOn must have the same day of week as the due date of the bill"
-      );
-    }
-
-    return new Array(numDates).fill(startOn).map((date, index) => {
-      return addWeeks(date, index);
-    });
-  } else if (due.monthly) {
-    let monthly = due.monthly as MonthIndex;
-    return new Array(numDates).fill(startOn).map((_date, index) => {
-      const date = addMonths(startOn, index);
-      const daysInMonth = getDaysInMonth(date);
-      return setDayOfMonth(date, monthly > daysInMonth ? daysInMonth : monthly);
-    });
-  } else if (due.yearly) {
-    let [yearMonth, yearDayOfMonth] = due.yearly as YearIndexes;
-    // these should be zero indexed
-
-    const yearlyDate = new Date(
-      startOn.getFullYear(),
-      yearMonth,
-      yearDayOfMonth
-    );
-
-    if (!isEqual(startOn, yearlyDate)) {
-      throw new Error(
-        "startOn must have the same month and day as the due date of the bill"
-      );
-    }
-
-    return new Array(numDates).fill(yearlyDate).map((_date, index) => {
-      return addYears(yearlyDate, index);
-    });
+export function getBillDates({ due }: Bill, start: Date, end: Date): Date[] {
+  if (!isAfter(end, start)) {
+    throw new Error("End date must come after start date");
   }
 
-  throw new Error("No schedule added");
+  return eachDayOfInterval({ start, end }).filter(day => {
+    if (due.weekly) {
+      return isSameDay(day, setDayOfWeek(day, due.weekly)) ? true : false;
+    } else if (due.monthly) {
+      return isSameDay(day, setDayOfMonth(day, due.monthly)) ? true : false;
+    } else if (due.yearly) {
+      const [monthIndex, dayOfMonthIndex] = due.yearly;
+      return isSameDay(
+        day,
+        setDayOfMonth(setMonth(day, monthIndex), dayOfMonthIndex)
+      )
+        ? true
+        : false;
+    }
+
+    return false;
+  });
 }
 
-export function addFutureBillDates(bill: Bill, numDates = 3) {
-  return {
-    ...bill,
-    dueDates: getFutureBillDates(bill, numDates)
-  };
+export function getBillAmountForPayPeriod(
+  bill: Bill,
+  payPeriod: PayPeriod
+): number {
+  const amount = bill.amount ? bill.amount : 0;
+  const billDates = getBillDatesForPayPeriod(bill, payPeriod);
+  return billDates.length > 0 ? amount * billDates.length : 0;
 }
 
-export function getBillAmountForPayPeriod(bill: Bill, payPeriod: PayPeriod) {
-  const dates = getBillDatesForPayPeriod(bill, payPeriod);
-  return bill.amount * dates.length;
+export function getBillEstimatedForPayPeriod(
+  bill: Bill,
+  payPeriod: PayPeriod
+): number {
+  const billDates = getBillDatesForPayPeriod(bill, payPeriod);
+  return billDates.length > 0 ? bill.estimated * billDates.length : 0;
 }
 
 export function isBillInPayPeriod(bill: Bill, payPeriod: PayPeriod): boolean {
@@ -82,20 +55,24 @@ export function isBillInPayPeriod(bill: Bill, payPeriod: PayPeriod): boolean {
 }
 
 export function getBillDatesForPayPeriod(
-  { dueDates }: Bill,
+  bill: Bill,
   { start, end }: PayPeriod
 ) {
-  if (dueDates.length === 0) {
-    throw new Error("No due dates found in bill. Have you added them?");
-  }
-  return dueDates.filter(dueDate => {
-    return isBetween(dueDate, start, end, true);
-  });
+  return getBillDates(bill, start, end);
 }
 
-export function createBill(bill: InitialBill) {
+export function createBill({
+  type = "source",
+  amount = 0,
+  autoPay = false,
+  paid = false,
+  ...bill
+}: Bill) {
   return {
-    dueDates: [],
+    type,
+    amount,
+    autoPay,
+    paid,
     ...bill
   };
 }

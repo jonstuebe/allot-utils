@@ -20,12 +20,29 @@ export function chunk(array: Array<any>, size: number): Array<any> {
   return chunked_arr;
 }
 
-export function parseISO(dateISO: string): Date {
-  const [year, month, day] = dateISO
-    .substr(0, 10)
-    .split("-")
-    .map(item => Number(item));
+export function strToDate(
+  date: string,
+  format: "YYYY-MM-DD" | "MM-DD-YYYY" | "MM/DD/YYYY" = "YYYY-MM-DD"
+): Date {
+  let year, month, day;
+  const delimiter = format === "MM/DD/YYYY" ? "/" : "-";
+  const dateArr = date.split(delimiter);
+  switch (format) {
+    case "MM-DD-YYYY":
+      [month, day, year] = dateArr;
+      break;
+    case "MM/DD/YYYY":
+      [month, day, year] = dateArr;
+      break;
+    default:
+      [year, month, day] = dateArr;
+      break;
+  }
 
+  return createDate(Number(year), Number(month), Number(day));
+}
+
+export function createDate(year: number, month: number, day: number): Date {
   return new Date(year, month - 1, day);
 }
 

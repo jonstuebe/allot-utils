@@ -1,4 +1,4 @@
-import { chunk, isBetween, formatCurrency, parseISO } from "./utils";
+import { chunk, isBetween, formatCurrency, strToDate } from "./utils";
 
 describe("isBetween", () => {
   it("return truthy", () => {
@@ -21,9 +21,9 @@ describe("isBetween", () => {
   });
 });
 
-describe("parseISO", () => {
-  it("returns a date object from a ISO string", () => {
-    expect(parseISO("2020-02-01T07:00:00.000Z").toISOString()).toEqual(
+describe("strToDate", () => {
+  it("returns a date object from a Date string", () => {
+    expect(strToDate("2020-02-01").toISOString()).toEqual(
       "2020-02-01T07:00:00.000Z"
     );
   });

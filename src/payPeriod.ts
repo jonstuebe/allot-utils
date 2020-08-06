@@ -8,20 +8,24 @@ import {
   Paycheck,
   Paychecks
 } from "./types";
-import { isBillInPayPeriod, getBillAmountForPayPeriod } from "./bill";
+import {
+  isBillInPayPeriod,
+  getBillAmountForPayPeriod,
+  getBillEstimatedForPayPeriod
+} from "./bill";
 import { isBetween } from "./utils";
 
 export function validatePayPeriod(
   payPeriod: PayPeriod,
   bills: Bills,
   paychecks: Paychecks
-) {
+): PayPeriod {
   return {
     ...payPeriod,
-    bills: bills.filter((bill: Bill) => {
+    bills: bills.filter(bill => {
       return isBillInPayPeriod(bill, payPeriod);
     }),
-    paychecks: paychecks.filter((paycheck: Paycheck) => {
+    paychecks: paychecks.filter(paycheck => {
       return isPaycheckInPayPeriod(paycheck, payPeriod);
     })
   };
@@ -31,24 +35,43 @@ export function validatePayPeriods(
   payPeriods: PayPeriods,
   bills: Bills,
   paychecks: Paychecks
-) {
+): PayPeriods {
   return payPeriods.map(payPeriod =>
     validatePayPeriod(payPeriod, bills, paychecks)
   );
 }
 
-export function totalIncomeInPayPeriod(payPeriod: PayPeriod) {
-  return payPeriod.paychecks.reduce(
-    (acc, paycheck: Paycheck) => acc + paycheck.amount,
-    0
-  );
+export function totalIncomeInPayPeriod(payPeriod: PayPeriod): number {
+  return payPeriod.paychecks
+    .filter(paycheck => {
+      return isPaycheckInPayPeriod(paycheck, payPeriod);
+    })
+    .reduce((acc, paycheck) => {
+      const amount = paycheck.amount ? paycheck.amount : 0;
+      return acc + amount;
+    }, 0);
 }
 
-export function totalBillsInPayPeriod(payPeriod: PayPeriod) {
-  return payPeriod.bills.reduce(
-    (acc, bill: Bill) => acc + getBillAmountForPayPeriod(bill, payPeriod),
-    0
-  );
+export function totalBillsInPayPeriod(payPeriod: PayPeriod): number {
+  return payPeriod.bills
+    .filter((bill: Bill) => {
+      return isBillInPayPeriod(bill, payPeriod);
+    })
+    .reduce(
+      (acc, bill: Bill) => acc + getBillAmountForPayPeriod(bill, payPeriod),
+      0
+    );
+}
+
+export function totalEstimatedBillsInPayPeriod(payPeriod: PayPeriod): number {
+  return payPeriod.bills
+    .filter((bill: Bill) => {
+      return isBillInPayPeriod(bill, payPeriod);
+    })
+    .reduce(
+      (acc, bill: Bill) => acc + getBillEstimatedForPayPeriod(bill, payPeriod),
+      0
+    );
 }
 
 export function getPayPeriods(paydays: Date[]): PayPeriod[] {

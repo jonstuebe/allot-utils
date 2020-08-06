@@ -1,5 +1,5 @@
 import { Paycheck } from "./types";
 
-export function createPaycheck(paycheck: Paycheck) {
-  return paycheck;
+export function createPaycheck({ amount = 0, ...paycheck }: Paycheck) {
+  return { amount, ...paycheck };
 }
